@@ -144,40 +144,41 @@
   </div>
 
   <script>
-    document.getElementById("orcamentoForm").addEventListener("submit", function(event) {
-      event.preventDefault();
+  document.getElementById("orcamentoForm").addEventListener("submit", function(event) {
+    event.preventDefault();
 
-      const origem = document.getElementById("origem").value;
-      const destino = document.getElementById("destino").value;
-      const ida = document.getElementById("ida").value;
-      const volta = document.getElementById("volta").value;
-      const adultos = document.getElementById("adultos").value;
-      const criancas = document.getElementById("criancas").value;
-      const bagagem = document.getElementById("bagagem").value;
-      const flexibilidade = document.getElementById("flexibilidade").checked ? "Sim" : "Não";
-      const observacao = document.getElementById("observacao").value;
+    const origem = document.getElementById("origem").value;
+    const destino = document.getElementById("destino").value;
+    const ida = document.getElementById("ida").value;
+    const volta = document.getElementById("volta").value;
+    const adultos = document.getElementById("adultos").value;
+    const criancas = document.getElementById("criancas").value;
+    const bagagem = document.getElementById("bagagem").value;
+    const flexibilidade = document.getElementById("flexibilidade").checked ? "Sim" : "Não";
+    const observacao = document.getElementById("observacao").value;
 
-      const servicos = Array.from(document.querySelectorAll('.checkbox-group input:checked'))
-                            .map(el => el.value)
-                            .join(', ') || "Nenhum";
+    const servicos = Array.from(document.querySelectorAll('.checkbox-group input:checked'))
+                          .map(el => el.value)
+                          .join(', ') || "Nenhum";
 
-      const mensagem = 
-        `*Solicitação de Orçamento*%0A%0A` +
-        `🌍 *Origem:* ${origem}%0A` +
-        `🏖️ *Destino:* ${destino}%0A` +
-        `📅 *Ida:* ${ida}%0A` +
-        `📅 *Volta:* ${volta || "—"}%0A` +
-        `👨‍👩‍👧‍👦 *Adultos:* ${adultos} | *Crianças:* ${criancas}%0A` +
-        `🧳 *Bagagem despachada:* ${bagagem}%0A` +
-        `📆 *Flexibilidade de datas:* ${flexibilidade}%0A` +
-        `🛎️ *Serviços adicionais:* ${servicos}%0A%0A` +
-        `📝 *Observação:* ${observacao || "—"}`;
+    const mensagem =
+      `*Solicitação de Orçamento*%0A%0A` +
+      `➡️ *Origem:* ${origem}%0A` +
+      `➡️ *Destino:* ${destino}%0A` +
+      `📅 *Ida:* ${ida}%0A` +
+      `📅 *Volta:* ${volta || "—"}%0A` +
+      `👨‍👩‍👧‍👦 *Adultos:* ${adultos} | *Crianças:* ${criancas}%0A` +
+      `🧳 *Bagagem despachada:* ${bagagem}%0A` +
+      `📆 *Flexibilidade de datas:* ${flexibilidade}%0A` +
+      `🛎️ *Serviços adicionais:* ${servicos}%0A%0A` +
+      `📝 *Observação:* ${observacao || "—"}`;
 
-      const telefone = "5514998496879";
-      const url = `https://wa.me/${telefone}?text=${mensagem}`;
+    const telefone = "5514998496879";
+    const url = `https://wa.me/${telefone}?text=${mensagem}`;
 
-      window.open(url, "_blank");
-    });
-  </script>
+    window.open(url, "_blank");
+  });
+</script>
+
 </body>
 </html>
