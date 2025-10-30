@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Orçamento de Viagem 1</title>
+  <title>Orçamento de Viagem</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -12,6 +12,8 @@
       padding: 0;
       display: flex;
       justify-content: center;
+      flex-direction: column;
+      align-items: center;
     }
 
     .container {
@@ -88,11 +90,45 @@
       font-size: 12px;
       color: #777;
     }
+
+    .contact-info {
+      background: #fff;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 420px;
+      margin: 20px;
+      text-align: center;
+    }
+
+    .contact-info h3 {
+      color: #333;
+      margin-bottom: 15px;
+    }
+
+    .contact-item {
+      margin: 10px 0;
+      color: #555;
+    }
+
+    .contact-item a {
+      color: #007bff;
+      text-decoration: none;
+    }
+
+    .contact-item a:hover {
+      text-decoration: underline;
+    }
+
+    .contact-item strong {
+      color: #333;
+    }
   </style>
 </head>
 <body>
   <div class="container">
-    <h2>Solicitar Orçamento 1.0</h2>
+    <h2>Solicitar Orçamento 1.1</h2>
 
     <form id="orcamentoForm">
       <label>Origem *</label>
@@ -143,6 +179,20 @@
     <div class="footer">* Informações obrigatórias</div>
   </div>
 
+  <div class="contact-info">
+    <h3>Informações de Contato</h3>
+    <div class="contact-item">
+      <strong>Instagram:</strong> <a href="https://www.instagram.com/global_tour6.0" target="_blank">@global_tour6.0</a>
+    </div>
+    <div class="contact-item">
+      <strong>E-mail:</strong> <a href="mailto:viagens@globalltour.online">viagens@globalltour.online</a>
+    </div>
+    <div class="contact-item">
+      <strong>Telefones:</strong><br>
+      <a href="tel:+5511964590052">(11) 96459-0052</a><br>
+      <a href="tel:+5512983109812">(12) 98310-9812</a>
+    </div>
+  </div>
 
   <script>
   document.getElementById("orcamentoForm").addEventListener("submit", function(event) {
@@ -162,7 +212,6 @@
                           .map(el => el.value)
                           .join(', ') || "Nenhum";
 
-    // Monta a mensagem com \n para quebras de linha (não usar %0A manualmente)
     const mensagemText =
       "*Solicitação de Orçamento*\n\n" +
       "Origem: " + (origem || "—") + "\n" +
@@ -175,18 +224,14 @@
       "Serviços adicionais: " + servicos + "\n\n" +
       "Observação: " + (observacao || "—");
 
-    // Faz o encode correto em UTF-8
     const encoded = encodeURIComponent(mensagemText);
 
-    const telefone = "5514998496879"; // seu número
+    const telefone = "5514998496879";
     const url = `https://wa.me/${telefone}?text=${encoded}`;
 
-    // abre em nova aba/janela
     window.open(url, "_blank");
   });
 </script>
-
-
 
 </body>
 </html>
