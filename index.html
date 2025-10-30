@@ -3,7 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Orçamento de Viagem - Global Tour 6.0</title>
+  <title>Global Tour 6.0 - Solicite seu Orçamento</title>
+  <meta name="description" content="Solicite orçamento de viagem com a Global Tour 6.0. Passagens, hospedagem, passeios e muito mais!">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
     * {
@@ -24,11 +26,18 @@
     }
 
     .logo {
-      width: 180px;
+      width: 200px;
       height: auto;
       margin-bottom: 25px;
       animation: fadeIn 0.5s ease-in;
-      filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.3));
+      transition: all 0.3s ease;
+      mask-image: radial-gradient(ellipse at center, black 60%, transparent 100%);
+      -webkit-mask-image: radial-gradient(ellipse at center, black 60%, transparent 100%);
+    }
+
+    .logo:hover {
+      transform: translateY(-5px) scale(1.05);
+      filter: brightness(1.1);
     }
 
     .contact-icons {
@@ -115,6 +124,15 @@
       border-color: #c5a270;
       background: #ffffff;
       box-shadow: 0 0 0 4px rgba(197, 162, 112, 0.1);
+    }
+
+    /* Estilização para campos de data */
+    input[type="text"].date-input {
+      position: relative;
+    }
+
+    input[type="text"].date-input::placeholder {
+      color: #a0aec0;
     }
 
     textarea {
@@ -232,7 +250,7 @@
       }
 
       .logo {
-        width: 150px;
+        width: 160px;
       }
 
       .container {
@@ -264,6 +282,7 @@
   </style>
 </head>
 <body>
+  <!-- Logo da empresa -->
   <img src="logo.png" alt="Global Tour 6.0" class="logo">
 
   <div class="contact-icons">
@@ -292,10 +311,10 @@
       <input type="text" id="destino" placeholder="Ex: Rio de Janeiro" required>
 
       <label>Data de Ida *</label>
-      <input type="date" id="ida" required>
+      <input type="text" id="ida" class="date-input" placeholder="dd/mm/aaaa" maxlength="10" required>
 
       <label>Data de Volta</label>
-      <input type="date" id="volta">
+      <input type="text" id="volta" class="date-input" placeholder="dd/mm/aaaa" maxlength="10">
 
       <div class="row">
         <div>
@@ -343,12 +362,51 @@
   </div>
 
   <script>
-  // Função para formatar data de YYYY-MM-DD para DD-MM-YYYY
-  function formatDate(dateString) {
-    if (!dateString) return '';
-    const [year, month, day] = dateString.split('-');
-    return `${day}-${month}-${year}`;
+  // Função para formatar a data automaticamente enquanto digita
+  function formatDateInput(input) {
+    let value = input.value.replace(/\D/g, ''); // Remove tudo que não é número
+    
+    if (value.length >= 2) {
+      value = value.substring(0, 2) + '/' + value.substring(2);
+    }
+    if (value.length >= 5) {
+      value = value.substring(0, 5) + '/' + value.substring(5, 9);
+    }
+    
+    input.value = value;
   }
+
+  // Função para validar data no formato dd/mm/aaaa
+  function isValidDate(dateString) {
+    if (!dateString || dateString.length !== 10) return false;
+    
+    const parts = dateString.split('/');
+    if (parts.length !== 3) return false;
+    
+    const day = parseInt(parts[0], 10);
+    const month = parseInt(parts[1], 10);
+    const year = parseInt(parts[2], 10);
+    
+    if (year < 1000 || year > 3000 || month === 0 || month > 12) return false;
+    
+    const monthLength = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+    
+    // Ajuste para ano bissexto
+    if (year % 400 === 0 || (year % 100 !== 0 && year % 4 === 0)) {
+      monthLength[1] = 29;
+    }
+    
+    return day > 0 && day <= monthLength[month - 1];
+  }
+
+  // Adicionar formatação automática aos campos de data
+  document.getElementById('ida').addEventListener('input', function(e) {
+    formatDateInput(e.target);
+  });
+
+  document.getElementById('volta').addEventListener('input', function(e) {
+    formatDateInput(e.target);
+  });
 
   document.getElementById("orcamentoForm").addEventListener("submit", function(event) {
     event.preventDefault();
@@ -363,6 +421,18 @@
     const flexibilidade = document.getElementById("flexibilidade").checked ? "Sim" : "Não";
     const observacao = document.getElementById("observacao").value.trim();
 
+    // Validar data de ida
+    if (!isValidDate(ida)) {
+      alert('Por favor, insira uma data de ida válida no formato dd/mm/aaaa');
+      return;
+    }
+
+    // Validar data de volta se preenchida
+    if (volta && !isValidDate(volta)) {
+      alert('Por favor, insira uma data de volta válida no formato dd/mm/aaaa');
+      return;
+    }
+
     const servicos = Array.from(document.querySelectorAll('.checkbox-group input:checked'))
                           .map(el => el.value)
                           .join(' | ');
@@ -372,8 +442,8 @@
 
     if (origem) mensagemText += `> Origem : *${origem}*\n`;
     if (destino) mensagemText += `> Destino : *${destino}*\n`;
-    if (ida) mensagemText += `> Ida : *${formatDate(ida)}*\n`;
-    if (volta) mensagemText += `> Volta : *${formatDate(volta)}*\n`;
+    if (ida) mensagemText += `> Ida : *${ida}*\n`;
+    if (volta) mensagemText += `> Volta : *${volta}*\n`;
     if (adultos) mensagemText += `> Adultos : *${adultos}*\n`;
     if (criancas) mensagemText += `> Crianças : *${criancas}*\n`;
     if (bagagem) mensagemText += `> Bagagem despachada : *${bagagem}*\n`;
