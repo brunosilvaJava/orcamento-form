@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Solicitação de Orçamento</title>
+  <style>
+    :root{
+      --bg:#f4f6fb;
+      --card:#fff;
+      --muted:#6b7280;
+      --accent:#0b76ef;
+      --radius:12px;
+      --gap:12px;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+    body{background:var(--bg);margin:0;padding:28px;display:flex;min-height:100vh;align-items:center;justify-content:center}
+    .card{width:100%;max-width:560px;background:var(--card);border-radius:var(--radius);box-shadow:0 6px 24px rgba(10,12,20,0.06);padding:22px}
+    h1{text-align:center;margin:6px 0 18px;font-size:20px}
+    label{display:block;margin-top:10px;color:var(--muted);font-weight:600;font-size:13px}
+    .row{display:flex;gap:8px}
+    input[type="text"], input[type="email"], input[type="tel"], input[type="date"], select, textarea{
+      width:100%;padding:12px;border-radius:8px;border:1px solid #e6e9ef;background:#fff;font-size:14px;box-sizing:border-box;
+    }
+    .phone-wrap{display:flex;gap:8px;align-items:center}
+    .btn{margin-top:16px;background:var(--accent);color:#fff;border:none;padding:12px;border-radius:10px;width:100%;font-weight:700;cursor:pointer}
+    .btn:active{transform:translateY(1px)}
+    .muted{color:var(--muted);font-size:13px;margin-top:8px}
+    .small{font-size:12px;color:#9aa0ad}
+    .flex-between{display:flex;justify-content:space-between;align-items:center}
+    /* responsive */
+    @media (max-width:420px){.card{padding:16px}}
+    /* honeypot (hidden) */
+    .hp{position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden}
+    .footer-icons{display:flex;gap:12px;justify-content:center;margin-bottom:8px}
+    .success{background:#ecfdf5;border-left:4px solid #10b981;padding:10px;border-radius:8px;color:#065f46;margin-top:12px;display:none}
+    .error{background:#fff5f5;border-left:4px solid #ef4444;padding:10px;border-radius:8px;color:#7f1d1d;margin-top:12px;display:none}
+  </style>
+</head>
+<body>
+  <div class="card" role="main">
+    <div class="footer-icons small">
+      <span>📞</span><span>📸</span><span>✉️</span><span>📋</span>
+    </div>
+
+    <h1>Solicitação de Orçamento</h1>
+
+    <form id="budgetForm" action="https://formspree.io/f/mgvpyjzn" method="POST" novalidate>
+      <label for="name">Seu Nome Completo *</label>
+      <input id="name" name="name" type="text" required placeholder="Informe seu nome">
+
+      <label for="phone">Celular *</label>
+      <div class="phone-wrap">
+        <select name="country" aria-label="País">
+          <option value="BR">🇧🇷 +55</option>
+          <option value="US">🇺🇸 +1</option>
+        </select>
+        <input id="phone" name="phone" type="tel" required placeholder="(11) 96123-4567" pattern="[\d\s()+-]{6,}">
+      </div>
+
+      <label for="email">E-mail</label>
+      <input id="email" name="email" type="email" placeholder="seu@exemplo.com">
+
+      <label for="origin">Origem *</label>
+      <input id="origin" name="origin" type="text" required placeholder="Informe a cidade de partida">
+
+      <label for="destination">Destino *</label>
+      <input id="destination" name="destination" type="text" required placeholder="Informe a cidade de destino">
+
+      <div class="row">
+        <div style="flex:1">
+          <label for="departDate">Ida *</label>
+          <input id="departDate" name="departDate" type="date" required>
+        </div>
+        <div style="flex:1">
+          <label for="returnDate">Volta</label>
+          <input id="returnDate" name="returnDate" type="date">
+        </div>
+      </div>
+
+      <label for="message">Mensagem</label>
+      <textarea id="message" name="message" rows="4" placeholder="Observações..."></textarea>
+
+      <!-- Honeypot field (anti-spam) - keep the name obscure -->
+      <div class="hp" aria-hidden="true">
+        <label for="website">Website</label>
+        <input id="website" name="website" type="text" tabindex="-1" autocomplete="off">
+      </div>
+
+      <!-- reCAPTCHA: opcional - veja seção abaixo -->
+      <!-- <div class="g-recaptcha" data-sitekey="YOUR_RECAPTCHA_SITE_KEY"></div> -->
+
+      <button class="btn" type="submit">Enviar Solicitação</button>
+
+      <div class="success" id="success">Solicitação enviada! Checaremos seu e-mail em breve.</div>
+      <div class="error" id="error">Ocorreu um problema ao enviar. Tente novamente.</div>
+    </form>
+  </div>
+
+  <script>
+    const form = document.getElementById('budgetForm');
+    const successBox = document.getElementById('success');
+    const errorBox = document.getElementById('error');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      // honeypot check
+      if (form.website.value) {
+        // likely bot
+        return;
+      }
+
+      // simple client validation
+      if (!form.checkValidity()) {
+        form.reportValidity();
+        return;
+      }
+
+      // gather form data
+      const data = new FormData(form);
+
+      try {
+        const resp = await fetch(form.action, {
+          method: 'POST',
+          headers: { 'Accept': 'application/json' },
+          body: data
+        });
+
+        if (resp.ok) {
+          successBox.style.display = 'block';
+          errorBox.style.display = 'none';
+          form.reset();
+        } else {
+          const json = await resp.json().catch(()=>null);
+          console.error('formspree error', json);
+          throw new Error('Erro ao enviar');
+        }
+      } catch (err) {
+        errorBox.style.display = 'block';
+        successBox.style.display = 'none';
+      }
+    });
+  </script>
+</body>
+</html>
