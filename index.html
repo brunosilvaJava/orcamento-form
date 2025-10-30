@@ -3,144 +3,298 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Orçamento de Viagem</title>
+  <title>Orçamento de Viagem - Global Tour 6.0</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f6f7fb;
+    * {
       margin: 0;
       padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #1a2332 0%, #2c3e50 50%, #34495e 100%);
+      min-height: 100vh;
+      padding: 20px;
       display: flex;
       justify-content: center;
-      flex-direction: column;
       align-items: center;
+      flex-direction: column;
+    }
+
+    .logo {
+      width: 180px;
+      height: auto;
+      margin-bottom: 25px;
+      animation: fadeIn 0.5s ease-in;
+      filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.3));
+    }
+
+    .contact-icons {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 20px;
+      animation: fadeIn 0.5s ease-in;
+    }
+
+    .contact-icon {
+      width: 45px;
+      height: 45px;
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .contact-icon:hover {
+      transform: translateY(-3px) scale(1.05);
+      box-shadow: 0 6px 20px rgba(197, 162, 112, 0.5);
+      background: linear-gradient(135deg, #c5a270 0%, #d4af77 100%);
     }
 
     .container {
-      background: #fff;
-      padding: 20px;
-      border-radius: 12px;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      background: #ffffff;
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
       width: 100%;
-      max-width: 420px;
-      margin: 20px;
+      max-width: 500px;
+      animation: fadeIn 0.5s ease-in 0.1s backwards;
+      border-top: 4px solid #c5a270;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     h2 {
       text-align: center;
-      color: #333;
+      color: #1a2332;
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 30px;
+      letter-spacing: -0.5px;
     }
 
     label {
-      font-weight: bold;
+      font-weight: 500;
       display: block;
-      margin-top: 15px;
-      color: #333;
+      margin-top: 20px;
+      margin-bottom: 8px;
+      color: #1a2332;
+      font-size: 14px;
+      letter-spacing: 0.2px;
     }
 
     input, select, textarea {
       width: 100%;
-      padding: 10px;
-      margin-top: 5px;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      font-size: 14px;
+      padding: 14px 16px;
+      border: 2px solid #e2e8f0;
+      border-radius: 12px;
+      font-size: 15px;
+      font-family: 'Inter', sans-serif;
+      transition: all 0.3s ease;
+      background: #f7fafc;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: #c5a270;
+      background: #ffffff;
+      box-shadow: 0 0 0 4px rgba(197, 162, 112, 0.1);
     }
 
     textarea {
       resize: vertical;
+      min-height: 100px;
     }
 
     .row {
-      display: flex;
-      gap: 10px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+      margin-top: 20px;
+    }
+
+    .row > div label {
+      margin-top: 0;
+      font-size: 13px;
     }
 
     .row input {
-      flex: 1;
+      margin-top: 8px;
     }
 
     .checkbox-group {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-top: 10px;
+    }
+
+    .checkbox-group label {
       display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 5px;
+      align-items: center;
+      margin: 0;
+      padding: 12px;
+      background: #f7fafc;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-weight: 400;
+    }
+
+    .checkbox-group label:hover {
+      background: #edf2f7;
+      border: 1px solid #c5a270;
+    }
+
+    .checkbox-group input[type="checkbox"] {
+      width: auto;
+      margin-right: 8px;
+      cursor: pointer;
+      accent-color: #c5a270;
+    }
+
+    .flex-checkbox {
+      display: flex;
+      align-items: center;
+      margin-top: 20px;
+      padding: 14px;
+      background: #f7fafc;
+      border-radius: 12px;
+    }
+
+    .flex-checkbox input {
+      width: auto;
+      margin-right: 10px;
+      cursor: pointer;
+      accent-color: #c5a270;
+    }
+
+    .flex-checkbox label {
+      margin: 0;
+      font-weight: 400;
+      cursor: pointer;
     }
 
     button {
-      margin-top: 20px;
+      margin-top: 30px;
       width: 100%;
-      background-color: #007bff;
-      color: white;
-      padding: 12px;
+      background: linear-gradient(135deg, #c5a270 0%, #d4af77 100%);
+      color: #1a2332;
+      padding: 16px;
       font-size: 16px;
+      font-weight: 700;
       border: none;
-      border-radius: 6px;
+      border-radius: 12px;
       cursor: pointer;
-      transition: 0.3s;
+      transition: all 0.3s ease;
+      letter-spacing: 0.5px;
+      box-shadow: 0 4px 15px rgba(197, 162, 112, 0.4);
+      text-transform: uppercase;
     }
 
     button:hover {
-      background-color: #0056b3;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(197, 162, 112, 0.6);
+      background: linear-gradient(135deg, #d4af77 0%, #e5c087 100%);
+    }
+
+    button:active {
+      transform: translateY(0);
     }
 
     .footer {
       text-align: center;
-      margin-top: 15px;
-      font-size: 12px;
-      color: #777;
+      margin-top: 20px;
+      font-size: 13px;
+      color: #718096;
+      font-weight: 400;
     }
 
-    .contact-info {
-      background: #fff;
-      padding: 20px;
-      border-radius: 12px;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-      width: 100%;
-      max-width: 420px;
-      margin: 20px;
-      text-align: center;
-    }
+    @media (max-width: 600px) {
+      body {
+        padding: 15px;
+      }
 
-    .contact-info h3 {
-      color: #333;
-      margin-bottom: 15px;
-    }
+      .logo {
+        width: 150px;
+      }
 
-    .contact-item {
-      margin: 10px 0;
-      color: #555;
-    }
+      .container {
+        padding: 30px 25px;
+      }
 
-    .contact-item a {
-      color: #007bff;
-      text-decoration: none;
-    }
+      h2 {
+        font-size: 24px;
+      }
 
-    .contact-item a:hover {
-      text-decoration: underline;
-    }
+      .row {
+        grid-template-columns: 1fr;
+      }
 
-    .contact-item strong {
-      color: #333;
+      .checkbox-group {
+        grid-template-columns: 1fr;
+      }
+
+      .contact-icons {
+        gap: 12px;
+      }
+
+      .contact-icon {
+        width: 42px;
+        height: 42px;
+        font-size: 18px;
+      }
     }
   </style>
 </head>
 <body>
+  <img src="logo.png" alt="Global Tour 6.0" class="logo">
+
+  <div class="contact-icons">
+    <a href="https://www.instagram.com/global_tour6.0" target="_blank" class="contact-icon" title="Instagram: @global_tour6.0">
+      📸
+    </a>
+    <a href="mailto:viagens@globalltour.online" class="contact-icon" title="E-mail: viagens@globalltour.online">
+      ✉️
+    </a>
+    <a href="tel:+5511964590052" class="contact-icon" title="Telefone: (11) 96459-0052">
+      📱
+    </a>
+    <a href="tel:+5512983109812" class="contact-icon" title="Telefone: (12) 98310-9812">
+      ☎️
+    </a>
+  </div>
+
   <div class="container">
-    <h2>Solicitar Orçamento 1.1</h2>
+    <h2>✈️ Solicitar Orçamento</h2>
 
     <form id="orcamentoForm">
       <label>Origem *</label>
-      <input type="text" id="origem" placeholder="Informe a cidade de partida" required>
+      <input type="text" id="origem" placeholder="Ex: São Paulo" required>
 
       <label>Destino *</label>
-      <input type="text" id="destino" placeholder="Informe a cidade de destino" required>
+      <input type="text" id="destino" placeholder="Ex: Rio de Janeiro" required>
 
-      <label>Ida *</label>
+      <label>Data de Ida *</label>
       <input type="date" id="ida" required>
 
-      <label>Volta</label>
+      <label>Data de Volta</label>
       <input type="date" id="volta">
 
       <div class="row">
@@ -153,80 +307,82 @@
           <input type="number" id="criancas" value="0" min="0">
         </div>
         <div>
-          <label>Bagagem</label>
+          <label>Bagagens</label>
           <input type="number" id="bagagem" value="0" min="0">
         </div>
       </div>
 
-      <label>
-        <input type="checkbox" id="flexibilidade"> Possuo flexibilidade de datas próximas
-      </label>
-
-      <label>Serviços adicionais</label>
-      <div class="checkbox-group">
-        <label><input type="checkbox" value="Hospedagem"> Hospedagem</label>
-        <label><input type="checkbox" value="Transporte"> Transporte</label>
-        <label><input type="checkbox" value="Passeios"> Passeios</label>
-        <label><input type="checkbox" value="Seguros"> Seguros</label>
+      <div class="flex-checkbox">
+        <input type="checkbox" id="flexibilidade">
+        <label for="flexibilidade">Possuo flexibilidade de datas próximas</label>
       </div>
 
-      <label>Observação</label>
-      <textarea id="observacao" rows="3" placeholder="Informe qualquer observação adicional"></textarea>
+      <label>Serviços Adicionais</label>
+      <div class="checkbox-group">
+        <label>
+          <input type="checkbox" value="Hospedagem"> 🏨 Hospedagem
+        </label>
+        <label>
+          <input type="checkbox" value="Transporte"> 🚗 Transporte
+        </label>
+        <label>
+          <input type="checkbox" value="Passeios"> 🎭 Passeios
+        </label>
+        <label>
+          <input type="checkbox" value="Seguros"> 🛡️ Seguros
+        </label>
+      </div>
 
-      <button type="submit">Solicitar</button>
+      <label>Observações</label>
+      <textarea id="observacao" placeholder="Adicione informações extras sobre sua viagem..."></textarea>
+
+      <button type="submit">📩 Enviar Solicitação</button>
     </form>
 
-    <div class="footer">* Informações obrigatórias</div>
-  </div>
-
-  <div class="contact-info">
-    <h3>Informações de Contato</h3>
-    <div class="contact-item">
-      <strong>Instagram:</strong> <a href="https://www.instagram.com/global_tour6.0" target="_blank">@global_tour6.0</a>
-    </div>
-    <div class="contact-item">
-      <strong>E-mail:</strong> <a href="mailto:viagens@globalltour.online">viagens@globalltour.online</a>
-    </div>
-    <div class="contact-item">
-      <strong>Telefones:</strong><br>
-      <a href="tel:+5511964590052">(11) 96459-0052</a><br>
-      <a href="tel:+5512983109812">(12) 98310-9812</a>
-    </div>
+    <div class="footer">* Campos obrigatórios</div>
   </div>
 
   <script>
+  // Função para formatar data de YYYY-MM-DD para DD-MM-YYYY
+  function formatDate(dateString) {
+    if (!dateString) return '';
+    const [year, month, day] = dateString.split('-');
+    return `${day}-${month}-${year}`;
+  }
+
   document.getElementById("orcamentoForm").addEventListener("submit", function(event) {
     event.preventDefault();
 
-    const origem = (document.getElementById("origem").value || '').trim();
-    const destino = (document.getElementById("destino").value || '').trim();
-    const ida = (document.getElementById("ida").value || '').trim();
-    const volta = (document.getElementById("volta").value || '').trim();
-    const adultos = (document.getElementById("adultos").value || '0').trim();
-    const criancas = (document.getElementById("criancas").value || '0').trim();
-    const bagagem = (document.getElementById("bagagem").value || '0').trim();
+    const origem = document.getElementById("origem").value.trim();
+    const destino = document.getElementById("destino").value.trim();
+    const ida = document.getElementById("ida").value.trim();
+    const volta = document.getElementById("volta").value.trim();
+    const adultos = document.getElementById("adultos").value.trim();
+    const criancas = document.getElementById("criancas").value.trim();
+    const bagagem = document.getElementById("bagagem").value.trim();
     const flexibilidade = document.getElementById("flexibilidade").checked ? "Sim" : "Não";
-    const observacao = (document.getElementById("observacao").value || '').trim();
+    const observacao = document.getElementById("observacao").value.trim();
 
     const servicos = Array.from(document.querySelectorAll('.checkbox-group input:checked'))
                           .map(el => el.value)
-                          .join(', ') || "Nenhum";
+                          .join(' | ');
 
-    const mensagemText =
-      "*Solicitação de Orçamento*\n\n" +
-      "Origem: " + (origem || "—") + "\n" +
-      "Destino: " + (destino || "—") + "\n" +
-      "Ida: " + (ida || "—") + "\n" +
-      "Volta: " + (volta || "—") + "\n" +
-      "Adultos: " + adultos + " | Crianças: " + criancas + "\n" +
-      "Bagagem despachada: " + bagagem + "\n" +
-      "Flexibilidade de datas: " + flexibilidade + "\n" +
-      "Serviços adicionais: " + servicos + "\n\n" +
-      "Observação: " + (observacao || "—");
+    // Monta a mensagem apenas com campos preenchidos
+    let mensagemText = "*Solicitação de Orçamento*\n\n";
+
+    if (origem) mensagemText += `> Origem : *${origem}*\n`;
+    if (destino) mensagemText += `> Destino : *${destino}*\n`;
+    if (ida) mensagemText += `> Ida : *${formatDate(ida)}*\n`;
+    if (volta) mensagemText += `> Volta : *${formatDate(volta)}*\n`;
+    if (adultos) mensagemText += `> Adultos : *${adultos}*\n`;
+    if (criancas) mensagemText += `> Crianças : *${criancas}*\n`;
+    if (bagagem) mensagemText += `> Bagagem despachada : *${bagagem}*\n`;
+    mensagemText += `> Flexibilidade de datas : *${flexibilidade}*\n`;
+    if (servicos) mensagemText += `> Serviços adicionais : *${servicos}*\n`;
+    if (observacao) mensagemText += `> Observação : *${observacao}*\n`;
 
     const encoded = encodeURIComponent(mensagemText);
-
-    const telefone = "5514998496879";
+    const telefone = "5512983109812";
     const url = `https://wa.me/${telefone}?text=${encoded}`;
 
     window.open(url, "_blank");
