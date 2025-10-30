@@ -127,12 +127,35 @@
     }
 
     /* Estilização para campos de data */
-    input[type="text"].date-input {
+    input[type="date"] {
       position: relative;
+      color: #2d3748;
     }
 
-    input[type="text"].date-input::placeholder {
+    input[type="date"]::-webkit-calendar-picker-indicator {
+      cursor: pointer;
+      filter: opacity(0.6);
+    }
+
+    input[type="date"]::-webkit-calendar-picker-indicator:hover {
+      filter: opacity(1);
+    }
+
+    /* Placeholder customizado para campos de data vazios */
+    input[type="date"]:not(:focus):invalid {
       color: #a0aec0;
+    }
+
+    input[type="date"]::before {
+      content: attr(placeholder);
+      position: absolute;
+      color: #a0aec0;
+      pointer-events: none;
+    }
+
+    input[type="date"]:focus::before,
+    input[type="date"]:valid::before {
+      content: "";
     }
 
     textarea {
@@ -311,10 +334,10 @@
       <input type="text" id="destino" placeholder="Ex: Rio de Janeiro" required>
 
       <label>Data de Ida *</label>
-      <input type="text" id="ida" class="date-input" placeholder="dd/mm/aaaa" maxlength="10" required>
+      <input type="date" id="ida" required>
 
       <label>Data de Volta</label>
-      <input type="text" id="volta" class="date-input" placeholder="dd/mm/aaaa" maxlength="10">
+      <input type="date" id="volta">
 
       <div class="row">
         <div>
@@ -362,51 +385,11 @@
   </div>
 
   <script>
-  // Função para formatar a data automaticamente enquanto digita
-  function formatDateInput(input) {
-    let value = input.value.replace(/\D/g, ''); // Remove tudo que não é número
-    
-    if (value.length >= 2) {
-      value = value.substring(0, 2) + '/' + value.substring(2);
-    }
-    if (value.length >= 5) {
-      value = value.substring(0, 5) + '/' + value.substring(5, 9);
-    }
-    
-    input.value = value;
+  function formatDateToBrazilian(dateString) {
+    if (!dateString) return '';
+    const [year, month, day] = dateString.split('-');
+    return `${day}/${month}/${year}`;
   }
-
-  // Função para validar data no formato dd/mm/aaaa
-  function isValidDate(dateString) {
-    if (!dateString || dateString.length !== 10) return false;
-    
-    const parts = dateString.split('/');
-    if (parts.length !== 3) return false;
-    
-    const day = parseInt(parts[0], 10);
-    const month = parseInt(parts[1], 10);
-    const year = parseInt(parts[2], 10);
-    
-    if (year < 1000 || year > 3000 || month === 0 || month > 12) return false;
-    
-    const monthLength = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-    
-    // Ajuste para ano bissexto
-    if (year % 400 === 0 || (year % 100 !== 0 && year % 4 === 0)) {
-      monthLength[1] = 29;
-    }
-    
-    return day > 0 && day <= monthLength[month - 1];
-  }
-
-  // Adicionar formatação automática aos campos de data
-  document.getElementById('ida').addEventListener('input', function(e) {
-    formatDateInput(e.target);
-  });
-
-  document.getElementById('volta').addEventListener('input', function(e) {
-    formatDateInput(e.target);
-  });
 
   document.getElementById("orcamentoForm").addEventListener("submit", function(event) {
     event.preventDefault();
@@ -421,29 +404,16 @@
     const flexibilidade = document.getElementById("flexibilidade").checked ? "Sim" : "Não";
     const observacao = document.getElementById("observacao").value.trim();
 
-    // Validar data de ida
-    if (!isValidDate(ida)) {
-      alert('Por favor, insira uma data de ida válida no formato dd/mm/aaaa');
-      return;
-    }
-
-    // Validar data de volta se preenchida
-    if (volta && !isValidDate(volta)) {
-      alert('Por favor, insira uma data de volta válida no formato dd/mm/aaaa');
-      return;
-    }
-
     const servicos = Array.from(document.querySelectorAll('.checkbox-group input:checked'))
                           .map(el => el.value)
                           .join(' | ');
 
-    // Monta a mensagem apenas com campos preenchidos
     let mensagemText = "*Solicitação de Orçamento*\n\n";
 
     if (origem) mensagemText += `> Origem : *${origem}*\n`;
     if (destino) mensagemText += `> Destino : *${destino}*\n`;
-    if (ida) mensagemText += `> Ida : *${ida}*\n`;
-    if (volta) mensagemText += `> Volta : *${volta}*\n`;
+    if (ida) mensagemText += `> Ida : *${formatDateToBrazilian(ida)}*\n`;
+    if (volta) mensagemText += `> Volta : *${formatDateToBrazilian(volta)}*\n`;
     if (adultos) mensagemText += `> Adultos : *${adultos}*\n`;
     if (criancas) mensagemText += `> Crianças : *${criancas}*\n`;
     if (bagagem) mensagemText += `> Bagagem despachada : *${bagagem}*\n`;
@@ -452,7 +422,7 @@
     if (observacao) mensagemText += `> Observação : *${observacao}*\n`;
 
     const encoded = encodeURIComponent(mensagemText);
-    const telefone = "5512983109812";
+    const telefone = "5511964590052";
     const url = `https://wa.me/${telefone}?text=${encoded}`;
 
     window.open(url, "_blank");
